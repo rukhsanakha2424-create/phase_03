@@ -1,0 +1,50 @@
+[
+  {
+    "id": 2,
+    "description": "Urgent task",
+    "status": "pending",
+    "priority": "HIGH"
+  },
+  {
+    "id": 3,
+    "description": "Someday task",
+    "status": "pending",
+    "priority": "LOW"
+  },
+  {
+    "id": 4,
+    "description": "Normal task",
+    "status": "pending",
+    "priority": "MEDIUM"
+  },
+  {
+    "id": 5,
+    "description": "Task 1",
+    "status": "pending",
+    "priority": "MEDIUM"
+  },
+  {
+    "id": 6,
+    "description": "Buy milk",
+    "status": "pending",
+    "priority": "MEDIUM"
+  },
+  {
+    "id": 7,
+    "description": "Learn Python",
+    "status": "pending",
+    "priority": "HIGH"
+  },
+  {
+    "id": 8,
+    "description": "Buy milk",
+    "status": "pending",
+    "priority": "MEDIUM"
+  },
+  {
+    "id": 9,
+    "description": "Learn Python",
+    "status": "pending",
+    "priority": "HIGH"
+  }
+]

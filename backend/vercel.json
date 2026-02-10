@@ -1,0 +1,21 @@
+<<<<<<< HEAD
+{
+  "version": 2,
+  "builds": [
+    { "src": "src/app/main.py", "use": "@vercel/python" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "src/app/main.py" }
+  ]
+}
+=======
+{
+  "version": 2,
+  "builds": [
+    { "src": "src/app/main.py", "use": "@vercel/python" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "src/app/main.py" }
+  ]
+}
+>>>>>>> 858a7eec22dfbe8ee565d73198d95611d2bc3d2c

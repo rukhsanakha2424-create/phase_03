@@ -1,0 +1,572 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * Design System Base Styles
+ * Built on design-guide.md: Midnight Slate, Focus Violet, Momentum Lime, Paper White
+ */
+
+/* ============================================================================
+   ROOT & TYPOGRAPHY
+   ============================================================================ */
+
+@layer base {
+  :root {
+    /* Organify Brand Colors */
+    --color-slate: #343a40;
+    --color-slate-light: #6c757d;
+    --color-slate-dark: #212529;
+    --color-organify-primary: #4361ee;
+    --color-organify-primary-light: #4895ef;
+    --color-organify-primary-dark: #3a56d4;
+    --color-organify-secondary: #3f37c9;
+    --color-organify-secondary-light: #560bad;
+    --color-organify-secondary-dark: #2d28a9;
+    --color-organify-accent: #4cc9f0;
+    --color-organify-accent-light: #72e0f2;
+    --color-organify-accent-dark: #3da8d6;
+    --color-neutral: #f8f9fa;
+    --color-neutral-light: #ffffff;
+    --color-neutral-dark: #e9ecef;
+    --color-background: #f0f2f5;
+    --color-error: #e63946;
+    --color-error-light: #ff7e8b;
+    --color-warning: #fca311;
+    --color-success: #2a9d8f;
+
+    /* Typography */
+    --font-family: var(--font-roboto), var(--font-space-grotesk), -apple-system,
+      BlinkMacSystemFont, "Segoe UI", , "Helvetica Neue", sans-serif;
+    --font-mono: "Courier New", monospace;
+
+    /* Spacing */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+    --spacing-base: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-2xl: 48px;
+
+    /* Z-index */
+    --z-base: 0;
+    --z-dropdown: 1000;
+    --z-fixed: 1020;
+    --z-modal: 1040;
+    --z-tooltip: 1060;
+
+    /* Transitions */
+    --transition-fast: 150ms;
+    --transition-base: 200ms;
+    --transition-slow: 300ms;
+
+    /* Line height */
+    --line-height-tight: 1.2;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.75;
+  }
+
+  /**
+   * Reset and base styles
+   */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font-family);
+    font-size: 16px;
+    line-height: var(--line-height-normal);
+    color: var(--color-slate);
+    background-color: var(--color-background);
+    transition: background-color var(--transition-base),
+      color var(--transition-base);
+  }
+
+  /**
+   * Typography defaults
+   */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 600;
+    line-height: var(--line-height-tight);
+    margin-bottom: var(--spacing-base);
+  }
+
+  h1 {
+    font-size: 32px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  h4 {
+    font-size: 16px;
+  }
+
+  h5,
+  h6 {
+    font-size: 14px;
+  }
+
+  p {
+    margin-bottom: var(--spacing-base);
+  }
+
+  a {
+    color: var(--color-organify-primary);
+    text-decoration: none;
+    transition: color var(--transition-base);
+  }
+
+  a:hover {
+    color: var(--color-organify-primary-dark);
+    text-decoration: underline;
+  }
+
+  a:active {
+    color: var(--color-organify-primary-dark);
+  }
+
+  /**
+   * Form elements
+   */
+  input,
+  textarea,
+  select {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="url"],
+  input[type="tel"],
+  textarea,
+  select {
+    background-color: var(--color-neutral-light);
+    color: var(--color-slate);
+    border: 1px solid var(--color-slate-light);
+    border-radius: 8px;
+    padding: 12px;
+    min-height: 44px;
+    transition: border-color var(--transition-base),
+      box-shadow var(--transition-base);
+  }
+
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus,
+  input[type="search"]:focus,
+  input[type="url"]:focus,
+  input[type="tel"]:focus,
+  textarea:focus,
+  select:focus {
+    outline: none;
+    border-color: var(--color-organify-primary);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+  }
+
+  /**
+   * Button defaults
+   */
+  button {
+    font-family: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    transition: background-color var(--transition-base),
+      color var(--transition-base);
+  }
+
+  /**
+   * List styles
+   */
+  ul,
+  ol {
+    margin-bottom: var(--spacing-base);
+    padding-left: var(--spacing-lg);
+  }
+
+  li {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  /**
+   * Code styles
+   */
+  code {
+    background-color: var(--color-slate-light);
+    color: var(--color-lime);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+  }
+
+  pre {
+    background-color: var(--color-slate-dark);
+    color: var(--color-white);
+    padding: var(--spacing-base);
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: var(--spacing-base);
+  }
+
+  pre code {
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+  }
+
+  /**
+   * Tables
+   */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: var(--spacing-base);
+  }
+
+  th,
+  td {
+    padding: var(--spacing-sm) var(--spacing-base);
+    text-align: left;
+    border-bottom: 1px solid var(--color-slate-light);
+  }
+
+  th {
+    background-color: var(--color-slate-light);
+    font-weight: 600;
+  }
+
+  /**
+   * Horizontal rule
+   */
+  hr {
+    border: none;
+    border-top: 1px solid var(--color-slate-light);
+    margin: var(--spacing-base) 0;
+  }
+
+  /**
+   * Blockquote
+   */
+  blockquote {
+    border-left: 4px solid var(--color-organify-primary);
+    padding-left: var(--spacing-base);
+    margin-left: 0;
+    margin-bottom: var(--spacing-base);
+    color: var(--color-slate-light);
+    font-style: italic;
+  }
+
+  /**
+   * Selection styles
+   */
+  ::selection {
+    background-color: var(--color-organify-primary);
+    color: var(--color-neutral-light);
+  }
+
+  /**
+   * Scrollbar styles
+   */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-slate-light);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-organify-primary);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-organify-primary-light);
+  }
+}
+
+/* ============================================================================
+   COMPONENT STYLES
+   ============================================================================ */
+
+@layer components {
+  /**
+   * Font Classes
+   */
+  .font-grotesk {
+    font-family: "Space Grotesk", var(--font-space-grotesk), sans-serif !important;
+  }
+
+  .font-space-grotesk {
+    font-family: "Space Grotesk", var(--font-space-grotesk), sans-serif !important;
+  }
+
+  .font-roboto {
+    font-family: "Roboto", var(--font-roboto), sans-serif !important;
+  }
+
+  /**
+   * Button Arrow SVG Animation
+   */
+  .button-arrow-svg {
+    transform-origin: left;
+    transition: transform 0.9s both;
+  }
+
+  button:hover .button-arrow-svg {
+    animation: jello-vertical 0.9s both;
+  }
+
+  /**
+   * Buttons - Primary
+   */
+  .btn-primary {
+    @apply inline-flex items-center justify-center
+      px-6 py-2 min-h-11
+      font-medium
+      text-white bg-organify-primary hover:bg-organify-primary-light active:bg-organify-primary-dark
+      rounded-md
+      border-0
+      cursor-pointer
+      transition-colors duration-200
+      disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /**
+   * Buttons - Secondary
+   */
+  .btn-secondary {
+    @apply inline-flex items-center justify-center
+      px-6 py-2 min-h-11
+      font-medium
+      text-organify-secondary bg-neutral hover:bg-neutral-dark
+      border border-organify-primary
+      rounded-md
+      cursor-pointer
+      transition-colors duration-200
+      disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /**
+   * Buttons - Small
+   */
+  .btn-sm {
+    @apply px-4 py-1 text-sm min-h-9;
+  }
+
+  /**
+   * Buttons - Large
+   */
+  .btn-lg {
+    @apply px-8 py-3 text-lg min-h-12;
+  }
+
+  /**
+   * Cards
+   */
+  .card {
+    @apply bg-neutral-light rounded-md shadow-md p-6 border border-slate-light;
+  }
+
+  .card-hover {
+    @apply transition-shadow duration-200 hover:shadow-lg;
+  }
+
+  /**
+   * Forms
+   */
+  .form-group {
+    @apply mb-6;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-slate mb-2;
+  }
+
+  .form-input {
+    @apply w-full px-4 py-2 min-h-11
+      bg-neutral-light text-slate
+      border border-slate-light rounded-md
+      focus:outline-none focus:border-organify-primary focus:ring-2 focus:ring-organify-primary focus:ring-opacity-20
+      transition-all duration-200;
+  }
+
+  .form-input::placeholder {
+    @apply text-slate-light;
+  }
+
+  .form-error {
+    @apply text-error text-sm mt-1;
+  }
+
+  .form-help {
+    @apply text-slate-light text-xs mt-1;
+  }
+
+  /**
+   * Alerts / Messages
+   */
+  .alert {
+    @apply px-6 py-4 rounded-md mb-6 flex gap-4;
+  }
+
+  .alert-error {
+    @apply bg-error/10 text-error border border-error/20;
+  }
+
+  .alert-warning {
+    @apply bg-warning/10 text-warning border border-warning/20;
+  }
+
+  .alert-success {
+    @apply bg-success/10 text-success border border-success/20;
+  }
+
+  .alert-info {
+    @apply bg-organify-primary/10 text-organify-primary border border-organify-primary/20;
+  }
+
+  /**
+   * Loading states
+   */
+  .loading {
+    @apply inline-block animate-spin;
+  }
+
+  /**
+   * Utility classes
+   */
+  .container {
+    @apply mx-auto px-4 sm:px-6 md:px-8;
+  }
+
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+
+  .flex-between {
+    @apply flex items-center justify-between;
+  }
+
+  .text-truncate {
+    @apply truncate;
+  }
+
+  .text-ellipsis {
+    @apply line-clamp-2;
+  }
+
+  .visually-hidden {
+    @apply sr-only;
+  }
+
+  /**
+   * Accessibility - Focus visible for keyboard navigation
+   */
+  .focus-ring {
+    @apply outline-none ring-2 ring-organify-primary ring-offset-2;
+  }
+
+  /**
+   * Responsive utilities
+   */
+  .mobile-only {
+    @apply block tablet:hidden;
+  }
+
+  .tablet-up {
+    @apply hidden tablet:block;
+  }
+
+  .desktop-only {
+    @apply hidden desktop:block;
+  }
+}
+
+/* ============================================================================
+   ANIMATIONS
+   ============================================================================ */
+
+@keyframes jello-vertical {
+  0% {
+    transform: scale3d(1, 1, 1);
+  }
+  30% {
+    transform: scale3d(0.75, 1.25, 1);
+  }
+  40% {
+    transform: scale3d(1.25, 0.75, 1);
+  }
+  50% {
+    transform: scale3d(0.85, 1.15, 1);
+  }
+  65% {
+    transform: scale3d(1.05, 0.95, 1);
+  }
+  75% {
+    transform: scale3d(0.95, 1.05, 1);
+  }
+  100% {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+/* ============================================================================
+   UTILITIES - Accessibility
+   ============================================================================ */
+
+/**
+ * Respect user motion preferences
+ */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/**
+ * Print styles
+ */
+@media print {
+  body {
+    background-color: white;
+    color: black;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  img,
+  svg {
+    max-width: 100%;
+  }
+}

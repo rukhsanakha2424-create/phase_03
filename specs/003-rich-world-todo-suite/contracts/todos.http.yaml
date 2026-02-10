@@ -1,0 +1,203 @@
+openapi: 3.0.1
+authors: frontend-team
+info:
+  title: Rich Todo Suite API Contracts
+  version: "0.1.0"
+  description: >-
+    Frontend reference for interacting with the existing FastAPI backend exposed at
+    `${NEXT_PUBLIC_API_BASE_URL}/api/v1/todos`.
+servers:
+  - url: ${NEXT_PUBLIC_API_BASE_URL}/api/v1
+paths:
+  /todos:
+    get:
+      summary: List todos
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending, completed]
+        - name: priority
+          in: query
+          schema:
+            type: string
+            enum: [low, medium, high]
+      responses:
+        '200':
+          description: Array of todos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Todo'
+        '400': { $ref: '#/components/responses/BadRequest' }
+    post:
+      summary: Create todo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTodoRequest'
+      responses:
+        '201':
+          description: Created todo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /todos/{todoId}:
+    patch:
+      summary: Update todo fields
+      parameters:
+        - name: todoId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: undo-token
+          in: header
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTodoRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    delete:
+      summary: Delete todo
+      parameters:
+        - name: todoId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Returns undo token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResponse'
+        '404': { $ref: '#/components/responses/NotFound' }
+  /todos/{todoId}/toggle:
+    post:
+      summary: Toggle completion state
+      parameters:
+        - name: todoId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        '404': { $ref: '#/components/responses/NotFound' }
+  /todos/{todoId}/undo:
+    post:
+      summary: Undo delete (within 5 s)
+      parameters:
+        - name: todoId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UndoRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        '404': { $ref: '#/components/responses/NotFound' }
+        '501':
+          description: Undo not enabled for backend deployment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Todo:
+      type: object
+      required: [id, title, status, createdAt, updatedAt, priority]
+      properties:
+        id: { type: integer }
+        title: { type: string, maxLength: 64 }
+        notes: { type: string }
+        priority:
+          type: string
+          enum: [low, medium, high]
+        status:
+          type: string
+          enum: [pending, completed]
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    CreateTodoRequest:
+      type: object
+      required: [title]
+      properties:
+        title: { type: string, maxLength: 64 }
+        notes: { type: string }
+        priority: { $ref: '#/components/schemas/Priority' }
+    UpdateTodoRequest:
+      type: object
+      properties:
+        title: { type: string, maxLength: 64 }
+        notes: { type: string }
+        priority: { $ref: '#/components/schemas/Priority' }
+    UndoRequest:
+      type: object
+      required: [undo_token]
+      properties:
+        undo_token: { type: string }
+    DeleteResponse:
+      type: object
+      required: [undo_token, expires_at]
+      properties:
+        undo_token: { type: string }
+        expires_at: { type: string, format: date-time }
+    Priority:
+      type: string
+      enum: [low, medium, high]
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: string }
+        message: { type: string }
+        details: { type: object }
+  responses:
+    BadRequest:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Todo not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

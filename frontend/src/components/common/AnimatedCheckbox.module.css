@@ -1,0 +1,125 @@
+/* Animated Checkbox Styles */
+
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.checkbox {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 0;
+  height: 0;
+  cursor: pointer;
+  position: absolute;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Label styling */
+.label {
+  color: #414856;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Strikethrough line for text */
+/* .label::before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background: #4f29f0;
+  border-radius: 2px;
+  top: 46%;
+  left: 38px;
+  transform: translateY(-50%);
+  transition: width 0.3s ease 0.1s;
+} */
+
+/* Firework dot animation */
+/* .label::after {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: transparent;
+  border-radius: 50%;
+  top: 50%;
+  right: -10px;
+  transform: translateY(-50%);
+} */
+
+/* Checked state for label */
+.checkbox:checked + .label {
+  color: #c3c8de;
+  animation: labelMove 0.3s ease 0.1s forwards;
+}
+
+.checkbox:checked + .label::before {
+  width: calc(100% - 28px);
+  animation: strikethrough 0.4s ease forwards;
+}
+
+.checkbox:checked + .label::after {
+  animation: firework 0.5s ease forwards 0.15s;
+}
+
+/* Animations */
+@keyframes labelMove {
+  0% {
+    padding-right: 0;
+  }
+
+  50% {
+    padding-right: 8px;
+  }
+
+  100% {
+    padding-right: 4px;
+  }
+}
+
+@keyframes strikethrough {
+  0% {
+    width: 0;
+  }
+
+  60% {
+    width: 100%;
+  }
+
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes firework {
+  0% {
+    opacity: 1;
+    box-shadow: 0 0 0 -2px #4f29f0, 0 0 0 -2px #4f29f0, 0 0 0 -2px #4f29f0,
+      0 0 0 -2px #4f29f0, 0 0 0 -2px #4f29f0, 0 0 0 -2px #4f29f0;
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    box-shadow: 0 -15px 0 0px #4f29f0, 14px -8px 0 0px #4f29f0,
+      14px 8px 0 0px #4f29f0, 0 15px 0 0px #4f29f0, -14px 8px 0 0px #4f29f0,
+      -14px -8px 0 0px #4f29f0;
+  }
+}

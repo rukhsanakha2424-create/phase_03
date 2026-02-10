@@ -1,0 +1,19 @@
+[project]
+name = "evolution-of-todo"
+version = "0.1.0"
+description = "Incremental evolution of a Task Management system"
+dependencies = []
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+todo = "src.cli.main:main"
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
