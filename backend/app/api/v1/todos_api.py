@@ -72,14 +72,14 @@ def map_todo_to_response(todo: TodoModel) -> Todo:
 
 
 @router.get("", response_model=List[Todo])
-async def get_todos(session: Session = Depends(get_session)):
+def get_todos(session: Session = Depends(get_session)):
     """Get list of all todos from database"""
     todos = db_get_todos(session)
     return [map_todo_to_response(todo) for todo in todos]
 
 
 @router.post("", response_model=Todo)
-async def create_todo(
+def create_todo(
     todo: CreateTodoRequest,
     session: Session = Depends(get_session)
 ):
@@ -90,14 +90,14 @@ async def create_todo(
             priority = Priority(todo.priority)
         except ValueError:
             raise HTTPException(status_code=400, detail=f"Invalid priority: {todo.priority}. Valid values are: low, medium, high")
-        
+
         # If agent_id is provided, validate that the agent exists
         if todo.agent_id is not None:
             from app.domain.agents.service import get_agent_by_id as get_agent_by_id_service
             agent = get_agent_by_id_service(session, todo.agent_id)
             if not agent:
                 raise HTTPException(status_code=404, detail=f"Agent with ID {todo.agent_id} not found")
-        
+
         new_todo = db_create_todo(
             session=session,
             title=todo.title,
@@ -113,7 +113,7 @@ async def create_todo(
 
 
 @router.put("/{todo_id}", response_model=Todo)
-async def update_todo(
+def update_todo(
     todo_id: int,
     todo_update: UpdateTodoRequest,
     session: Session = Depends(get_session)
@@ -127,14 +127,14 @@ async def update_todo(
                 priority = Priority(todo_update.priority)
             except ValueError:
                 raise HTTPException(status_code=400, detail=f"Invalid priority: {todo_update.priority}. Valid values are: low, medium, high")
-        
+
         # If agent_id is provided, validate that the agent exists
         if todo_update.agent_id is not None:
             from app.domain.agents.service import get_agent_by_id as get_agent_by_id_service
             agent = get_agent_by_id_service(session, todo_update.agent_id)
             if not agent:
                 raise HTTPException(status_code=404, detail=f"Agent with ID {todo_update.agent_id} not found")
-        
+
         updated_todo = db_update_todo(
             session=session,
             todo_id=todo_id,
@@ -144,10 +144,10 @@ async def update_todo(
             completed=todo_update.completed,
             agent_id=todo_update.agent_id
         )
-        
+
         if not updated_todo:
             raise HTTPException(status_code=404, detail="Todo not found")
-        
+
         return map_todo_to_response(updated_todo)
     except HTTPException:
         raise
@@ -156,7 +156,7 @@ async def update_todo(
 
 
 @router.delete("/{todo_id}")
-async def delete_todo(
+def delete_todo(
     todo_id: int,
     session: Session = Depends(get_session)
 ):
@@ -171,7 +171,7 @@ async def delete_todo(
 
 
 @router.post("/{todo_id}/toggle", response_model=Todo)
-async def toggle_todo_completion_status(
+def toggle_todo_completion_status(
     todo_id: int,
     session: Session = Depends(get_session)
 ):

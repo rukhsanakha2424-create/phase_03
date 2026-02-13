@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: todo-postgres
+    environment:
+      POSTGRES_DB: todo_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - todo-network
+
+  # Backend API Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: todo-backend
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/todo_db
+      UNDO_TOKEN_SECRET: your_secret_key_here
+      REQUEST_ID_HEADER: X-Request-ID
+      LOG_LEVEL: INFO
+    depends_on:
+      - postgres
+    networks:
+      - todo-network
+
+  # Frontend Service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: todo-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:8000
+      NEXT_PUBLIC_BETTER_AUTH_URL: http://localhost:3000
+    depends_on:
+      - backend
+    networks:
+      - todo-network
+
+  # Agent Service
+  agent:
+    build:
+      context: ./agent-service
+      dockerfile: Dockerfile
+    container_name: todo-agent
+    ports:
+      - "8002:8002"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/todo_db
+      API_BASE_URL: http://backend:8000
+    depends_on:
+      - postgres
+      - backend
+    networks:
+      - todo-network
+
+volumes:
+  postgres_data:
+
+networks:
+  todo-network:
+    driver: bridge

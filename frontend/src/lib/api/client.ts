@@ -98,13 +98,25 @@ class ApiClient {
       (headers as Record<string, string>)['Authorization'] = authHeader
     }
 
-    const response = await fetch(url, {
-      ...options,
-      method: 'GET',
-      headers,
-    })
+    try {
+      const response = await fetch(url, {
+        ...options,
+        method: 'GET',
+        headers,
+      })
 
-    return this.handleResponse<T>(response)
+      return this.handleResponse<T>(response)
+    } catch (error) {
+      // Handle network errors (like "Failed to fetch")
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        const networkError: AuthError = {
+          code: 'NETWORK_ERROR',
+          message: `Network error: Unable to connect to the server at ${this.baseUrl}. Please check if the backend is running.`,
+        }
+        throw networkError
+      }
+      throw error
+    }
   }
 
   /**
@@ -127,14 +139,26 @@ class ApiClient {
       (headers as Record<string, string>)['Authorization'] = authHeader
     }
 
-    const response = await fetch(url, {
-      ...options,
-      method: 'POST',
-      headers,
-      body: body ? JSON.stringify(body) : undefined,
-    })
+    try {
+      const response = await fetch(url, {
+        ...options,
+        method: 'POST',
+        headers,
+        body: body ? JSON.stringify(body) : undefined,
+      })
 
-    return this.handleResponse<T>(response)
+      return this.handleResponse<T>(response)
+    } catch (error) {
+      // Handle network errors (like "Failed to fetch")
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        const networkError: AuthError = {
+          code: 'NETWORK_ERROR',
+          message: `Network error: Unable to connect to the server at ${this.baseUrl}. Please check if the backend is running.`,
+        }
+        throw networkError
+      }
+      throw error
+    }
   }
 
   /**
@@ -157,14 +181,26 @@ class ApiClient {
       (headers as Record<string, string>)['Authorization'] = authHeader
     }
 
-    const response = await fetch(url, {
-      ...options,
-      method: 'PUT',
-      headers,
-      body: body ? JSON.stringify(body) : undefined,
-    })
+    try {
+      const response = await fetch(url, {
+        ...options,
+        method: 'PUT',
+        headers,
+        body: body ? JSON.stringify(body) : undefined,
+      })
 
-    return this.handleResponse<T>(response)
+      return this.handleResponse<T>(response)
+    } catch (error) {
+      // Handle network errors (like "Failed to fetch")
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        const networkError: AuthError = {
+          code: 'NETWORK_ERROR',
+          message: `Network error: Unable to connect to the server at ${this.baseUrl}. Please check if the backend is running.`,
+        }
+        throw networkError
+      }
+      throw error
+    }
   }
 
   /**
@@ -187,14 +223,26 @@ class ApiClient {
       (headers as Record<string, string>)['Authorization'] = authHeader
     }
 
-    const response = await fetch(url, {
-      ...options,
-      method: 'PATCH',
-      headers,
-      body: body ? JSON.stringify(body) : undefined,
-    })
+    try {
+      const response = await fetch(url, {
+        ...options,
+        method: 'PATCH',
+        headers,
+        body: body ? JSON.stringify(body) : undefined,
+      })
 
-    return this.handleResponse<T>(response)
+      return this.handleResponse<T>(response)
+    } catch (error) {
+      // Handle network errors (like "Failed to fetch")
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        const networkError: AuthError = {
+          code: 'NETWORK_ERROR',
+          message: `Network error: Unable to connect to the server at ${this.baseUrl}. Please check if the backend is running.`,
+        }
+        throw networkError
+      }
+      throw error
+    }
   }
 
   /**
@@ -213,13 +261,25 @@ class ApiClient {
       (headers as Record<string, string>)['Authorization'] = authHeader
     }
 
-    const response = await fetch(url, {
-      ...options,
-      method: 'DELETE',
-      headers,
-    })
+    try {
+      const response = await fetch(url, {
+        ...options,
+        method: 'DELETE',
+        headers,
+      })
 
-    return this.handleResponse<T>(response)
+      return this.handleResponse<T>(response)
+    } catch (error) {
+      // Handle network errors (like "Failed to fetch")
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        const networkError: AuthError = {
+          code: 'NETWORK_ERROR',
+          message: `Network error: Unable to connect to the server at ${this.baseUrl}. Please check if the backend is running.`,
+        }
+        throw networkError
+      }
+      throw error
+    }
   }
 }
 

@@ -35,9 +35,14 @@ async def inject_request_id(request: Request, call_next):
     return response
 
 
+from sqlmodel import SQLModel
+from app.db.database import async_engine
+
 @app.on_event("startup")
 async def startup_event() -> None:
-    init_db()
+    # Create all tables
+    async with async_engine.begin() as conn:
+        await conn.run_sync(SQLModel.metadata.create_all)
 
 
 # ✅ Root endpoint

@@ -19,9 +19,19 @@ export function AgentIndicator() {
       try {
         const data: AgentStatus = await apiClient.get('/api/v1/agent/status');
         setAgentStatus(data);
+        setError(null); // Clear any previous errors
       } catch (err) {
         console.error('Error fetching agent status:', err);
-        setError('Unable to connect to AI agent');
+        
+        // Check if it's a network error
+        if (err && typeof err === 'object' && 'code' in err && err.code === 'NETWORK_ERROR') {
+          setError('AI agent service unavailable');
+        } else {
+          setError('Unable to connect to AI agent');
+        }
+        
+        // Set a default offline status when API is unreachable
+        setAgentStatus({ status: 'offline' });
       } finally {
         setLoading(false);
       }
@@ -36,22 +46,32 @@ export function AgentIndicator() {
 
   if (loading) {
     return (
-      <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-organify-primary/10 border border-organify-primary/20">
+      <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-500/10 border border-blue-500/20">
         <motion.div
-          className="w-3 h-3 rounded-full bg-organify-primary"
+          className="w-3 h-3 rounded-full bg-blue-500"
           animate={{ scale: [1, 1.2, 1] }}
           transition={{ repeat: Infinity, duration: 1.5 }}
         />
-        <span className="text-xs font-medium text-organify-primary">AI Agent</span>
+        <span className="text-xs font-medium text-blue-500">AI Agent</span>
       </div>
     );
   }
 
-  if (error || !agentStatus) {
+  if (error && !agentStatus) {
     return (
       <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/20">
         <div className="w-3 h-3 rounded-full bg-red-500" />
         <span className="text-xs font-medium text-red-500">AI Offline</span>
+      </div>
+    );
+  }
+
+  // Show as offline when there's an error but we have a default status
+  if (error && agentStatus) {
+    return (
+      <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
+        <div className="w-3 h-3 rounded-full bg-yellow-500" />
+        <span className="text-xs font-medium text-yellow-500">AI Limited</span>
       </div>
     );
   }

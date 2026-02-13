@@ -1,0 +1,19 @@
+{{- if .Values.agent.enabled | default true }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "todo-app.fullname" . }}-agent
+  labels:
+    {{- include "todo-app.labels" . | nindent 4 }}
+    app: agent
+spec:
+  type: {{ .Values.agent.service.type }}
+  ports:
+    - port: {{ .Values.agent.service.port }}
+      targetPort: 8002
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "todo-app.selectorLabels" . | nindent 4 }}
+    app: agent
+{{- end }}

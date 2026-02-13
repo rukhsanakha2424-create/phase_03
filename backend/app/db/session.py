@@ -1,15 +1,16 @@
 import os
 from collections.abc import Generator
 from sqlmodel import Session, SQLModel
-from app.db.database import sync_engine
+from app.db.database import SyncSessionLocal
 from app.domain.agents.service import get_agents, create_agent
 from app.domain.agents.models import AgentStatusEnum
 
 
 def init_db() -> None:
     """Initialize the database and create tables"""
+    from app.db.database import sync_engine
     SQLModel.metadata.create_all(sync_engine)
-    
+
     # Create a default agent if none exists
     with Session(sync_engine) as session:
         agents = get_agents(session)
@@ -27,5 +28,6 @@ def init_db() -> None:
 
 def get_session() -> Generator[Session, None, None]:
     """Get a database session"""
+    from app.db.database import sync_engine
     with Session(sync_engine) as session:
         yield session
